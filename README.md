@@ -1,9 +1,9 @@
-# **highrise-js-sdk**
+# **highrise.sdk**
 <p align="center">
   <img src="https://i.ibb.co/d0vtV49/highrise-logo.png" alt="highrise-logo" />
 </p>
 
-> **The Highrise JS SDK is a JavaScript library for writing and running Highrise bots.**
+> **The Highrise SDK is a JavaScript library for writing and running Highrise bots.**
 
 
 ## **⚙️ Installation** 
@@ -17,52 +17,88 @@ npm i highrise.sdk@latest
 - Beginner friendly.
 - Auto reconnect system.
 - Supports Node version 10+
+- Supports Highrise WebAPI
 
 ## **📥 Class Import**
+1. Import the necessary classes and modules from the SDK:
 ```js
-const { Highrise } = require("highrise-js-sdk")
+const { Highrise, GatewayIntentBits, WebApi } = require('highrise.sdk');
+```
 
+2. Set up the bot's settings by providing a bot token and room ID:
+```js
 const settings = {
-  token: 'EXAMPLE-TOKEN',
-  room: 'EXAMPLE-ROOM',
-  events: ['ready', 'playerJoin', 'playerLeave', 'messages'],
-  reconnect: 5
-}
-
-const client = new Highrise({ events: settings.events }, settings.reconnect);
-client.login(settings.token, settings.room);
+  token: 'CHANGE-ME', // Replace with your bot token
+  room: 'CHANGE-ME', // Replace with the room ID your bot will join
+  reconnect: 5 // Reconnect duration in seconds
+};
 ```
-## **📘 Documentation**
 
-[Highrise JS SDK Documentation](https://highrise-js.notion.site/Highrise-JS-Documentation-2433f19c38c640d7ae361eefd720fc57)
-
-## **Event Handling in highrise-js-sdk**
-By default, the 'ready' event is included, ensuring that you receive notifications when the bot is ready and connected to the Highrise server. However, for other events, you need to explicitly include them during the class import.
-
-To include additional events, follow these steps:
-
-1. Import the Highrise class from the highrise-js-sdk package.
-2. Specify the events you want to receive by passing them as an array to the events parameter during the class import.
-3. Ensure that you import the necessary event handlers or listeners to handle the specific events of interest.
-
-For example:
+3. Create an instance of the Highrise bot, specifying the desired intents and cache option:
 ```js
-const { Highrise } = require("highrise-js-sdk");
-
-// Specify the events you want to receive
-const eventsOfInterest = ['ready', 'playerJoin', 'playerLeave', 'messages', 'emoteCreate'];
-
-// Create an instance of the Highrise class with the specified events
-const bot = new Highrise({ events: eventsOfInterest });
-
-// Continue with the rest of your code and configurations
+const bot = new Highrise({
+  intents: [
+    GatewayIntentBits.Ready,
+    GatewayIntentBits.Messages,
+    GatewayIntentBits.Joins,
+    GatewayIntentBits.Leaves,
+    GatewayIntentBits.Error
+  ],
+  cache: true
+}, settings.reconnect);
 ```
-By including the desired events during the class import, you ensure that the corresponding event handlers are set up and triggered when those specific events occur within the Highrise environment.
-To learn more about the available events and their descriptions, you can refer to the [Highrise-js SDK Documentation](https://highrise-js.notion.site/Get-Methods-3be2c38eb9cc4866b9dbff4575bf011e).
-With the updated event handling mechanism, you have greater control over the types of events you receive, allowing you to tailor the behavior and functionality of your bot according to your specific requirements.
 
-## **🎐 Events**
+3. Logging in the bot:
+```js
+bot.login(settings.token, settings.room);
+```
 
+## **🎋 GatewayIntentBits**
+GatewayIntentBits represents the different intents or event types that your bot can listen for. By specifying these intents when creating the bot, you can control which events your bot will receive. The available intents include:
+
+- `GatewayIntentBits.Ready`: Indicates when the bot is ready to start interacting.
+- `GatewayIntentBits.Messages`: Represents chat messages sent in the Highrise room.
+- `GatewayIntentBits.DirectMessages`: Represents direct messages sent to the bot.
+- `GatewayIntentBits.Joins`: Indicates when users join the room.
+- `GatewayIntentBits.Leaves`: Indicates when users leave the room.
+- `GatewayIntentBits.Reactions`: Represents reactions added to players.
+- `GatewayIntentBits.Emotes`: Represents emotes added to players.
+- `GatewayIntentBits.Tips`: Represents tip reactions received.
+- `GatewayIntentBits.VoiceChat`: Represents voice chat events.
+- `GatewayIntentBits.Movements`: Indicates when users move within the room.
+- `GatewayIntentBits.Error`: Represents errors that occur during API operations.
+
+You can choose the intents based on the events you want your bot to handle.
+
+## **📦 Cache Option**
+The cache option, when set to true, enables caching of certain data to optimize performance and reduce API calls. By enabling the cache and using the appropriate intents, you can utilize methods that rely on cached data rather than making API requests.
+
+## **📖 Examples**
+- Listening for the ready event:
+```js
+bot.on('ready', (session) => {
+  // Handle bot ready event
+});
+```
+- Listening for chat messages:
+```js
+bot.on('chatCreate', async (user, message) => {
+  // Handle chat message event
+});
+```
+- Listening for errors:
+```js
+bot.on('error', (message) => {
+  // Handle error event
+});
+```
+
+## **📘 Documentation**
+Refer to the SDK documentation for more information on available events and methods.
+[Highrise JS SDK Documentation](bit.ly/highrise-sdk)
+
+## **🤝 Contributions**
+Contributions to the Highrise SDK are welcome! If you find any issues or want to add new features, feel free to submit a pull request.
 
 ## Note
 
