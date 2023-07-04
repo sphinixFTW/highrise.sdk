@@ -1,0 +1,36 @@
+{
+  "name": "highrise.sdk",
+  "version": "1.0.0",
+  "description": "A JavaScript library for writing and running Highrise bots.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "npm run build:sdk",
+    "build:sdk": "webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sphinixFTW/highrise.sdk"
+  },
+  "bugs": "https://github.com/sphinixFTW/highrise.sdk/issues",
+  "homepage": "https://sphinixFTW.github.io/highrise.sdk",
+  "keywords": [
+    "highrise",
+    "highrise-js-sdk",
+    "highrise-sdk",
+    "highrise.sdk",
+    "highrise.js",
+    "highrisejs",
+    "bot",
+    "chatbot",
+    "sdk"
+  ],
+  "author": "iHsein",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "colors": "^1.4.0",
+    "events": "^3.3.0",
+    "ws": "^8.13.0"
+  }
+}
