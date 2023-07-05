@@ -142,11 +142,11 @@ class WebApi extends EventEmitter {
   */
   async getNewsfeedPosts(author_id, limit = 10, starts_after = null, sort_order = "asc") {
 
-
     // Validate the author_id
     if (!author_id || typeof author_id !== 'string') {
       throw new WebApiError(`[WARNING]: Invalid author_id. Please provide a valid author_id`.red);
-    }
+    };
+
     // Validate the limit parameter
     if (limit && (isNaN(limit) || typeof limit !== 'number')) {
       throw new WebApiError(`[WARNING]: Invalid limit. The limit value must be a number.`.red);
@@ -157,7 +157,7 @@ class WebApi extends EventEmitter {
       throw new WebApiError(`[WARNING]: Invalid sort_order. Available Orders:\n${this.sort_order.join("\n")}`);
     }
 
-    let endpoint = `${this.endpoint}posts?limit=${limit}&sort_order=${sort_order}`;
+    let endpoint = `${this.endpoint}posts?limit=${limit}&sort_order=${sort_order}&author_id=${author_id}`;
     if (starts_after) {
       endpoint += `&starts_after=${starts_after}`;
     }
