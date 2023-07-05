@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.1] - 2023-07-05
+## Fixed
+- A hotfix has been applied to the Highrise class, resolving the issue where importing the class resulted in a "TypeError: Highrise is not a constructor" error.
+
+
 ## [1.1.0] - 2023-07-05
 ## Added
 - New tip methods: Now the bot can tip any player using the `player.tip(user_id, amount)` function. This function returns a promise that resolves to either "success" or "insufficient_funds". The available tip amounts are similar to the ones in the game: "1, 5, 10, 50, 100, 500, 1000, 5000, 10000". Please note that similar to player tipping, a fee is applied.
