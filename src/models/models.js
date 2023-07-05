@@ -843,6 +843,40 @@ class ChangeBackpackRequest {
 }
 ChangeBackpackRequest.Response = ChangeBackpackRequest.ChangeBackpackResponse;
 
+class TipUserRequest {
+  /**
+   * The request to tip a user.
+   * @param {string} user_id - The ID of the user to tip.
+   * @param {string} gold_bar - The type of gold bar to use for the tip.
+   * @param {string|null} rid - An optional request ID.
+   */
+  constructor(user_id, gold_bar, rid = null) {
+    this.user_id = user_id;
+    this.gold_bar = gold_bar;
+    this.rid = rid;
+  }
+
+  /**
+   * The response to a tip user request.
+   */
+  static get TipUserResponse() {
+    return TipUserResponse;
+  }
+}
+
+class TipUserResponse {
+  /**
+   * The successful response to a `TipUserRequest`.
+   * @param {string} result - The result of the tip operation ("success" or "insufficient_funds").
+   * @param {string|null} rid - The request ID.
+   */
+  constructor(result, rid = null) {
+    this.result = result;
+    this.rid = rid;
+  }
+}
+
+TipUserRequest.Response = TipUserResponse;
 
 class GetRoomUsersRequest {
   /**
@@ -936,5 +970,6 @@ module.exports = {
   GetRoomPrivilegeRequest,
   GetBackpackRequest,
   GetRoomUsersRequest,
-  RoomInfo
+  RoomInfo,
+  TipUserRequest
 }

@@ -1,5 +1,5 @@
 const { HighriseError } = require("../handlers/error");
-const { InviteSpeakerRequest, RemoveSpeakerRequest, ModerateRoomRequest, EmoteRequest, MoveUserToRoomRequest, TeleportRequest, Position, SendPayloadAndGetResponse, GetUserOutfitRequest, GetRoomPrivilegeRequest, GetBackpackRequest, ReactionRequest } = require("../models/models");
+const { InviteSpeakerRequest, RemoveSpeakerRequest, ModerateRoomRequest, EmoteRequest, MoveUserToRoomRequest, TeleportRequest, Position, SendPayloadAndGetResponse, GetUserOutfitRequest, GetRoomPrivilegeRequest, GetBackpackRequest, ReactionRequest, TipUserRequest } = require("../models/models");
 const { generateRid, CachedRoomUsers } = require("../utils/Utils");
 
 class Users {
@@ -234,6 +234,55 @@ class Users {
       console.error(error); // Log the error message
     }
   };
+
+  async tip(user_id, amount) {
+    try {
+
+      const BARS = {
+        1: 'gold_bar_1',
+        5: 'gold_bar_5',
+        10: 'gold_bar_10',
+        50: 'gold_bar_50',
+        100: 'gold_bar_100',
+        500: 'gold_bar_500',
+        1000: 'gold_bar_1k',
+        5000: 'gold_bar_5000',
+        10000: 'gold_bar_10k'
+      }
+
+
+      if (!user_id || typeof user_id !== 'string') {
+        throw new HighriseError('Invalid user_id. Please provide a valid user_id'.red);
+      }
+
+      if (typeof amount !== 'number' || !BARS.hasOwnProperty(amount)) {
+        const availableAmounts = Object.keys(BARS).join(', ');
+        throw new HighriseError(`Invalid amount. Please provide a valid amount from the available gold bars: ${availableAmounts}`.red);
+      }
+
+      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        const tipUserRequest = new TipUserRequest(user_id, BARS[amount], this.rid);
+        const payload = {
+          _type: 'TipUserRequest',
+          user_id: tipUserRequest.user_id,
+          gold_bar: tipUserRequest.gold_bar,
+          rid: tipUserRequest.rid
+        }
+
+        const sender = new SendPayloadAndGetResponse(this.bot);
+
+        const response = await sender.sendPayloadAndGetResponse(
+          payload,
+          TipUserRequest.Response
+        );
+
+        return response.result.result
+      }
+
+    } catch (error) {
+      console.error(error); // Log the error message
+    }
+  }
 
   transport(user_id, room_id) {
     try {

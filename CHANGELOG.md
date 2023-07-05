@@ -1,4 +1,13 @@
 # Changelog
+
+## [1.1.0] - 2023-07-05
+## Added
+- New tip methods: Now the bot can tip any player using the `player.tip(user_id, amount)` function. This function returns a promise that resolves to either "success" or "insufficient_funds". The available tip amounts are similar to the ones in the game: "1, 5, 10, 50, 100, 500, 1000, 5000, 10000". Please note that similar to player tipping, a fee is applied.
+
+## Fixed
+- Fixed dot notation issue for methods.
+- Fixed a crash caused by the getNewsFeed function in the WebApi when attempting to fetch a post.
+
 ## [1.0.0]
 
 ## [1.0.0] - 2023-07-04
