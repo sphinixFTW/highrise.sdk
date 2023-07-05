@@ -208,4 +208,4 @@ class Highrise extends HighriseClient {
   }
 }
 
-module.exports = Highrise;
+module.exports = { Highrise };
