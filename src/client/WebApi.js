@@ -46,7 +46,7 @@ class WebApi extends EventEmitter {
  * @returns {Promise<object|null>} - A promise that resolves with the retrieved users or null.
  */
   async getUsers(username = null, limit = 10, starts_after = null, ends_before = null, sort_order = "asc") {
-    let endpoint = `${this.endpoint}users`;
+    let endpoint = `${this.endpoint}users?`;
 
     // Validate the limit parameter
     if (limit && (isNaN(limit) || typeof limit !== 'number')) {
@@ -59,19 +59,19 @@ class WebApi extends EventEmitter {
     }
 
     if (username) {
-      endpoint += `&${username}`;
+      endpoint += `&username=${username}`;
     }
 
     if (sort_order) {
-      endpoint += `&${sort_order}`;
+      endpoint += `&sort_order=${sort_order}`;
     }
 
     if (starts_after) {
-      endpoint += `&${starts_after}`;
+      endpoint += `&starts_after=${starts_after}`;
     }
 
     if (ends_before) {
-      endpoint += `&${ends_before}`;
+      endpoint += `&ends_before=${ends_before}`;
     }
 
     try {
