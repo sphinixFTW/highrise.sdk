@@ -97,7 +97,7 @@ class WebApi extends EventEmitter {
   * @param {string} sort_order - Determines the order in which results are returned. Can be either "asc" for ascending order or "desc" for descending order.
   * @returns {Promise<Array>} - A Promise that resolves to the list of rooms.
   */
-  async getRooms(owner_id, limit = 10, starts_after = null, sort_order = "asc") {
+  async getRooms(owner_id, limit = 10, starts_after = null, ends_before = null, sort_order = "asc") {
 
     // Validate the limit parameter
     if (limit && (isNaN(limit) || typeof limit !== 'number')) {
@@ -113,6 +113,9 @@ class WebApi extends EventEmitter {
     let endpoint = `${this.endpoint}rooms?limit=${limit}&sort_order=${sort_order}`;
     if (starts_after) {
       endpoint += `&starts_after=${starts_after}`;
+    }
+    if (ends_before) {
+      endpoint += `&ends_before=${ends_before}`;
     }
     if (owner_id) {
       endpoint += `&owner_id=${owner_id}`;
@@ -140,7 +143,7 @@ class WebApi extends EventEmitter {
   * @param {string} sort_order - Determines the order in which results are returned. Can be either "asc" for ascending order or "desc" for descending order.
   * @returns {Promise<Array>} - A Promise that resolves to an array of newsfeed posts.
   */
-  async getNewsfeedPosts(author_id, limit = 10, starts_after = null, sort_order = "asc") {
+  async getNewsfeedPosts(author_id, limit = 10, starts_after = null, ends_before = null, sort_order = "asc") {
 
     // Validate the author_id
     if (!author_id || typeof author_id !== 'string') {
@@ -160,6 +163,9 @@ class WebApi extends EventEmitter {
     let endpoint = `${this.endpoint}posts?limit=${limit}&sort_order=${sort_order}&author_id=${author_id}`;
     if (starts_after) {
       endpoint += `&starts_after=${starts_after}`;
+    }
+    if (ends_before) {
+      endpoint += `&ends_before=${ends_before}`;
     }
 
     try {
