@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.4] - 2023-07-17
+## Added
+- Implemented new bot customization methods.
+- Expanded the WebApi to retrieve item and grab data.
+
+## Changed
+- Reorganized the code structure by merging the WalletRequest file into the BotRequest file to handle all bot requests in one place.
+
+## Fixed
+- Resolved issues with the WebApi methods that were causing crashes in the bot.
+
+## [1.1.3] - 2023-07-08
+## Fixed
+- Applied a hotfix to the WebApi, resolving the issue where some methods were returning ERROR 404.
+
 ## [1.1.1] - 2023-07-05
 ## Fixed
 - A hotfix has been applied to the Highrise class, resolving the issue where importing the class resulted in a "TypeError: Highrise is not a constructor" error.
