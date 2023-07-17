@@ -95,7 +95,7 @@ bot.on('error', (message) => {
 
 ## **📘 Documentation**
 Refer to the SDK documentation for more information on available events and methods.
-[Highrise JS SDK Documentation](bit.ly/highrise-sdk)
+[Highrise JS SDK Documentation](https://bit.ly/highrise-sdk)
 
 ## **🤝 Contributions**
 Contributions to the Highrise SDK are welcome! If you find any issues or want to add new features, feel free to submit a pull request.
