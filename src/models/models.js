@@ -349,6 +349,65 @@ class BuyVoiceTimeRequest {
 }
 BuyVoiceTimeRequest.Response = BuyVoiceTimeRequest.Response;
 
+class BuyItemRequest {
+  /**
+   * BuyItemRequest class constructor.
+   * @param {string} item_id - The ID of the item being bought.
+   * @param {string|null} rid - The request ID.
+   */
+  constructor(item_id, rid = null) {
+    this.item_id = item_id;
+    this.rid = rid;
+  }
+
+  /**
+   * BuyItemResponse nested class.
+   * @param {("success"|"insufficient_funds")} result - The result of the purchase.
+   * @param {string|null} rid - The response ID.
+   */
+  static Response = class BuyItemResponse {
+    constructor(result, rid = null) {
+      this.result = result;
+      this.rid = rid;
+    }
+  };
+}
+
+BuyItemRequest.Response = BuyItemRequest.Response;
+
+class SetOutfitRequest {
+  /**
+   * Creates a new instance of SetOutfitRequest.
+   * @param {Array<Item>} outfit - The outfit items.
+   * @param {string|null} rid - The request ID.
+   */
+  constructor(outfit, rid = null) {
+    this.outfit = outfit;
+    this.rid = rid;
+  }
+
+  static get SetOutfitResponse() {
+    /**
+     * The successful response to a SetOutfitRequest.
+     */
+    return class {
+      /**
+       * Creates a new instance of SetOutfitResponse.
+       * @param {string|null} rid - The request ID.
+       */
+      constructor(rid = null) {
+        this.rid = rid;
+      }
+    };
+  }
+
+  static get Response() {
+    return SetOutfitRequest.SetOutfitResponse;
+  }
+}
+
+
+
 class BuyRoomBoostRequest {
   /**
    * Buy a room boost.
@@ -751,6 +810,34 @@ class GetUserOutfitRequest {
 }
 GetUserOutfitRequest.Response = GetUserOutfitRequest.GetUserOutfitResponse;
 
+class GetInventoryRequest {
+  /**
+   * GetInventoryRequest class constructor.
+   * @param {string|null} rid - The request ID.
+   */
+  constructor(rid = null) {
+    this.rid = rid;
+  }
+
+  /**
+   * GetInventoryResponse nested class.
+   * @param {Array<Item>} items - The list of items.
+   * @param {string|null} rid - The response ID.
+   */
+  static get GetInventoryResponse() {
+    class GetInventoryResponse {
+      constructor(items, rid) {
+        this.items = items;
+        this.rid = rid;
+      }
+    }
+
+    return GetInventoryResponse;
+  }
+}
+
+GetInventoryRequest.Response = GetInventoryRequest.GetInventoryResponse;
+
 
 class GetRoomPrivilegeRequest {
   /**
@@ -971,5 +1058,8 @@ module.exports = {
   GetBackpackRequest,
   GetRoomUsersRequest,
   RoomInfo,
-  TipUserRequest
+  TipUserRequest,
+  GetInventoryRequest,
+  BuyItemRequest,
+  SetOutfitRequest
 }

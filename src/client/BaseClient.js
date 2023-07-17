@@ -5,7 +5,7 @@ const { generateRid } = require("../utils/Utils");
 
 
 const { DirectMessages } = require("../actions/DirectMessages");
-const { Wallet } = require("../actions/GetWalletRequest");
+const { Wallet, Inventory, Item, Outfit } = require("../actions/BotRequests");
 const { VoiceChat } = require("../actions/GetVoiceChatRequest");
 const { Move } = require("../actions/FloorHitRequest");
 const { Users } = require("../actions/UserRequests");
@@ -38,6 +38,9 @@ class HighriseClient extends EventEmitter {
     this.inbox = new DirectMessages(this);
     this.chat = new AwaitEvents(this);
     this.wallet = new Wallet(this);
+    this.inventory = new Inventory(this);
+    this.items = new Item(this);
+    this.outfit = new Outfit(this);
     this.move = new Move(this);
     this.player = new Users(this);
     this.ws = ws;

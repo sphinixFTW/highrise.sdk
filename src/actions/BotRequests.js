@@ -1,7 +1,117 @@
 const { HighriseError } = require("../handlers/error");
-const { GetWalletRequest, SendPayloadAndGetResponse, BuyVoiceTimeRequest, BuyRoomBoostRequest } = require("../models/models");
+const { GetWalletRequest, SendPayloadAndGetResponse, BuyVoiceTimeRequest, BuyRoomBoostRequest, GetInventoryRequest, BuyItemRequest, SetOutfitRequest } = require("../models/models");
 const { generateRid } = require("../utils/Utils");
 
+class Outfit {
+  constructor(bot) {
+    this.bot = bot;
+    this.rid = generateRid();
+
+  }
+
+  async change(outfit) {
+    try {
+
+      if (!outfit) {
+        throw new HighriseError("Invalid outfit. Please make sure to use a valid outfit.".red)
+      }
+      const setOutfitRequest = new SetOutfitRequest(outfit, this.rid);
+
+      const payload = {
+        _type: 'SetOutfitRequest',
+        outfit: setOutfitRequest.outfit,
+        rid: setOutfitRequest.rid
+      };
+
+      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        this.bot.ws.send(JSON.stringify(payload), (error) => {
+          if (error) {
+            console.error("Error sending SetOutfitRequest:".red, error);
+            throw new HighriseError("Error sending SetOutfitRequest:".red)
+          }
+        });
+      }
+    } catch (error) {
+      throw new HighriseError("Error executing SetOutfitRequest:", error);
+    }
+  }
+
+}
+class Item {
+  constructor(bot) {
+    this.bot = bot;
+    this.rid = generateRid();
+  }
+
+  async buy(item_id) {
+    try {
+
+      if (!item_id) {
+        throw new HighriseError("Invalid item_id. Please provide a valid item ID".red);
+      }
+
+      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        // Create a BuyItemRequest object
+        const buyItemRequest = new BuyItemRequest(item_id, this.rid);
+
+        const payload = {
+          _type: "BuyItemRequest",
+          rid: buyItemRequest.rid,
+          item_id: buyItemRequest.item_id
+        };
+
+        // Create an instance of SendPayloadAndGetResponse
+        const sender = new SendPayloadAndGetResponse(this.bot);
+
+        // Send the payload and get the response
+        const response = await sender.sendPayloadAndGetResponse(
+          payload,
+          BuyItemRequest.Response
+        );
+
+        return response.result.result;
+      }
+    } catch (error) {
+      throw new HighriseError("Error executing buy item request:", error);
+    }
+  }
+}
+
+class Inventory {
+  constructor(bot) {
+    this.bot = bot;
+    this.rid = generateRid();
+  }
+
+  async get() {
+    try {
+      // Check if the WebSocket connection is open
+      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        const getInventoryRequest = new GetInventoryRequest(this.rid);
+
+        // Prepare the payload for the request
+        const payload = {
+          _type: "GetInventoryRequest",
+          rid: getInventoryRequest.rid
+        };
+
+        // Create an instance of SendPayloadAndGetResponse
+        const sender = new SendPayloadAndGetResponse(this.bot);
+
+        // Send the payload and get the response
+        const response = await sender.sendPayloadAndGetResponse(
+          payload,
+          GetInventoryRequest.Response
+        );
+
+        // Return the inventory data
+        return response.items.items;
+      }
+    } catch (error) {
+      throw new HighriseError("Error fetching inventory request:", error);
+    }
+  }
+}
 class Wallet {
   constructor(bot) {
     this.bot = bot;
@@ -202,4 +312,4 @@ class Wallet {
 
 }
 
-module.exports = { Wallet };
+module.exports = { Wallet, Inventory, Item, Outfit };

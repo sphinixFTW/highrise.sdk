@@ -31,7 +31,6 @@ class WebApi extends EventEmitter {
       return profile; // Return the retrieved user profile
     } catch (error) {
       console.error(`An Error Occurred:`, error);
-      throw error;
     }
   }
 
@@ -45,7 +44,7 @@ class WebApi extends EventEmitter {
  * @param {string} sort_order - The sort order for the retrieved users.
  * @returns {Promise<object|null>} - A promise that resolves with the retrieved users or null.
  */
-  async getUsers(username = null, limit = 10, starts_after = null, ends_before = null, sort_order = "asc") {
+  async getUsers(username = null, limit = 20, starts_after = null, ends_before = null, sort_order = "asc") {
     let endpoint = `${this.endpoint}users?`;
 
     // Validate the limit parameter
@@ -83,10 +82,8 @@ class WebApi extends EventEmitter {
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error retrieving user list:', error);
-      throw error;
     }
   }
-
 
   /**
   * Retrieve a list of rooms based on the specified parameters.
@@ -97,7 +94,7 @@ class WebApi extends EventEmitter {
   * @param {string} sort_order - Determines the order in which results are returned. Can be either "asc" for ascending order or "desc" for descending order.
   * @returns {Promise<Array>} - A Promise that resolves to the list of rooms.
   */
-  async getRooms(owner_id, limit = 10, starts_after = null, ends_before = null, sort_order = "asc") {
+  async getRooms(owner_id, limit = 20, starts_after = null, ends_before = null, sort_order = "asc") {
 
     // Validate the limit parameter
     if (limit && (isNaN(limit) || typeof limit !== 'number')) {
@@ -130,7 +127,6 @@ class WebApi extends EventEmitter {
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error retrieving room list:', error);
-      throw error;
     }
   }
 
@@ -143,7 +139,7 @@ class WebApi extends EventEmitter {
   * @param {string} sort_order - Determines the order in which results are returned. Can be either "asc" for ascending order or "desc" for descending order.
   * @returns {Promise<Array>} - A Promise that resolves to an array of newsfeed posts.
   */
-  async getNewsfeedPosts(author_id, limit = 10, starts_after = null, ends_before = null, sort_order = "asc") {
+  async getNewsfeedPosts(author_id, limit = 20, starts_after = null, ends_before = null, sort_order = "asc") {
 
     // Validate the author_id
     if (!author_id || typeof author_id !== 'string') {
@@ -181,7 +177,6 @@ class WebApi extends EventEmitter {
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error retrieving newsfeed posts:', error);
-      throw error;
     }
   }
 
@@ -223,7 +218,6 @@ class WebApi extends EventEmitter {
       return homeSpawnRoom || null; // Return the home spawn room if found, otherwise return null
     } catch (error) {
       console.error(`An Error Occurred:`, error);
-      throw error;
     }
   }
 
@@ -235,10 +229,11 @@ class WebApi extends EventEmitter {
   */
   async getPost(post_id) {
 
-    let endpoint = `${this.endpoint}/posts`;
-    if (post_id) {
-      endpoint += `/${post_id}`;
-    };
+    if (!post_id) {
+      throw new Error("Invalid post ID. Please provide a valid post ID.".red);
+    }
+
+    let endpoint = `${this.endpoint}posts/${post_id}`;
 
     try {
       const response = await axios.get(endpoint);
@@ -248,9 +243,143 @@ class WebApi extends EventEmitter {
     } catch (error) {
       // Handle any errors that occurred during the request
       console.error('Error retrieving post:', error);
+    }
+  }
+
+  /**
+  * Retrieves a grab by its ID.
+  * @param {string|null} grab_id - The ID of the grab to retrieve. If null, retrieves all grabs.
+  * @returns {Object|null} - The retrieved grab object, or null if not found.
+  */
+  async getGrab(grab_id) {
+
+    if (!grab_id) {
+      throw new Error("Invalid grab ID. Please provide a valid grab ID.".red);
+    }
+    // Construct the endpoint URL
+    let endpoint = `${this.endpoint}grabs/${grab_id}`;
+    try {
+      // Send a GET request to the endpoint
+      const response = await axios.get(endpoint);
+      const grab = response.data;
+
+      // Return the retrieved grab or null if not found
+      return grab || null;
+    } catch (error) {
+      console.error('Error retrieving grab:', error);
+    }
+  }
+
+  /**
+  * Retrieves an item by its ID.
+  * @param {string} item_id - The ID of the item to retrieve.
+  * @returns {Object|null} - The retrieved item object, or null if not found.
+  */
+  async getItem(item_id) {
+    // Check if item_id is falsy
+    if (!item_id) {
+      // Handle the case when item_id is not provided
+      throw new Error("Invalid item ID. Please provide a valid item ID.");
+    }
+
+    // Construct the endpoint URL using the item_id
+    let endpoint = `${this.endpoint}items/${item_id}`;
+
+    try {
+      // Send a GET request to the endpoint
+      const response = await axios.get(endpoint);
+      const item = response.data;
+
+      // Return the retrieved item or null if not found
+      return item || null;
+
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error('Error retrieving item:', error);
+    }
+  }
+
+  /**
+  * Retrieves items based on specified parameters.
+  * @param {string|null} item_name - The name of the item to filter by.
+  * @param {string|null} rarity - The rarity of the items to filter by.
+  * @param {string|null} category - The category of the items to filter by.
+  * @param {number} limit - The maximum number of items to retrieve (default: 20).
+  * @param {string|null} starts_after - The starting date to filter items after.
+  * @param {string|null} ends_before - The ending date to filter items before.
+  * @param {string} sort_order - The sort order for the items (default: "desc").
+  * @returns {Array<Object>} - An array of item objects.
+  */
+  async getItems(item_name = null, rarity = null, limit = 20, category = null, starts_after = null, ends_before = null, sort_order = "desc") {
+    // Initialize the base endpoint URL with the default parameters
+    let endpoint = `${this.endpoint}items?limit=${limit}&sort_order=${sort_order}`;
+
+    // Modify the endpoint URL based on the provided parameters
+    if (item_name) {
+      endpoint += `&item_name=${item_name}`;
+    }
+    if (rarity) {
+      endpoint += `&rarity=${rarity}`;
+    }
+    if (category) {
+      endpoint += `&category=${category}`;
+    }
+    if (starts_after) {
+      endpoint += `&starts_after=${starts_after}`;
+    }
+    if (ends_before) {
+      endpoint += `&ends_before=${ends_before}`;
+    }
+
+    try {
+      // Send a GET request to the endpoint
+      const response = await axios.get(endpoint);
+      const items = response.data;
+
+      // Return the array of item objects
+      return items;
+    } catch (error) {
+      console.error('Error retrieving items:', error);
       throw error;
     }
   }
+
+
+  /**
+  * Retrieves grabs based on specified parameters.
+  * @param {string|null} title - The title to filter grabs by.
+  * @param {number} limit - The maximum number of grabs to retrieve (default: 20).
+  * @param {string|null} starts_after - The starting date to filter grabs after.
+  * @param {string|null} ends_before - The ending date to filter grabs before.
+  * @param {string} sort_order - The sort order for the grabs (default: "desc").
+  * @returns {Array<Object>} - An array of grabbed objects.
+  */
+  async getGrabs(title = null, limit = 20, starts_after = null, ends_before = null, sort_order = "desc") {
+    // Construct the endpoint URL with query parameters
+    let endpoint = `${this.endpoint}grabs?limit=${limit}&sort_order=${sort_order}`;
+    if (title) {
+      endpoint += `&title=${title}`;
+    }
+    if (starts_after) {
+      endpoint += `&starts_after=${starts_after}`;
+    }
+    if (ends_before) {
+      endpoint += `&ends_before=${ends_before}`;
+    }
+
+    try {
+      // Send a GET request to the endpoint
+      const response = await axios.get(endpoint);
+      const grabs = response.data;
+
+      // Return the array of grabbed objects
+      return grabs;
+    } catch (error) {
+      console.error('Error retrieving grabs:', error);
+      throw error;
+    }
+  }
+
 
   /**
   * Retrieve a room's data based on the specified room_id.
