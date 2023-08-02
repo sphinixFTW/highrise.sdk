@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { SessionMetadata } = require('../models');
-const { packageVersion } = require('../../utils/Utils');
+const { packageVersion, updateBotId } = require('../../utils/Utils');
 
 /**
  * Handles the ready event.
@@ -33,6 +33,7 @@ async function handleReadyEvent(data, emit) {
 
     if (session) {
       emit('ready', session);
+      updateBotId(data.user_id);
     }
   } catch (error) {
     console.error('Error occurred while handling ready event:', error);

@@ -92,7 +92,6 @@ class Highrise extends HighriseClient {
         // Event listener for WebSocket message event
         this.messageEventListener = (event) => {
           const data = JSON.parse(event.data);
-
           // Check if the event type is included in the intents
           const eventType = data._type;
           const intents = EventTypeIntents[eventType];
@@ -112,7 +111,7 @@ class Highrise extends HighriseClient {
 
         // Event listener for WebSocket error event
         this.ws.addEventListener('error', (event) => {
-          console.error('Connection error:', event);
+          //console.error('Connection error:', event);
           this.reconnect();
         });
       }

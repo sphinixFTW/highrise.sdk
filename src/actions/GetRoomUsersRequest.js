@@ -23,10 +23,10 @@ class RoomUsers {
       }
 
       if (this.intents.includes(GatewayIntentBits.Joins)) {
-        this.bot.on('playerJoin', async (user) => {
+        this.bot.on('playerJoin', async (user, position) => {
           try {
             this.addUserToMap(user.id, {
-              position: { x: 1, y: 0, z: 1, facing: 'FrontRight' },
+              position: { x: position.x, y: position.y, z: position.z, facing: position.facing },
               id: user.id,
               username: user.username,
             });

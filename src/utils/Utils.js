@@ -1,7 +1,23 @@
 const CachedRoomUsers = new Map();
+const bot_info = {
+  id: null,
+  position: null
+};
 
 module.exports = {
   CachedRoomUsers,
+  updateBotId: (new_id) => {
+    bot_info.id = new_id
+  },
+
+  updateBotPosition: (new_position) => {
+    bot_info.position = new_position
+  },
+
+  getBotInfo: () => {
+    return bot_info
+  },
+
   generateRid: () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const length = 8;

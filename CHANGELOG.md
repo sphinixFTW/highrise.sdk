@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.5] - 2023-08-02
+## Added
+- A new parameter to the "playerJoin" event that returns the player's position.
+- playerTip event now work in both chat and inbox for more information [read this](https://createforum.highrise.game/t/python-sdk-version-23-3-1-bot-api-update/152)
+- A new method to fetch the bot information (id, position).
+
+## Changed
+- Returning the error data is no longer available. The package should not log the error; instead, it will log "reconnecting."
+- You can now retrieve the bot's id and position by using "bot.client.id.get" or "bot.client.position.get." This will be updated automatically when calling any request that includes the bot.
+
+## Fixed
+- Caching the player's data will now cache the player's position on join. Instead of 0,0,0, it will cache the actual position.
+- Using "bot.move" or "bot.player.teleport" will now save the bot's position.
+
 ## [1.1.4] - 2023-07-17
 ## Added
 - Implemented new bot customization methods.

@@ -1,6 +1,6 @@
 const { HighriseError } = require("../handlers/error");
 const { FloorHitRequest, Position, AnchorHitRequest, AnchorPosition } = require("../models/models");
-const { generateRid } = require("../utils/Utils");
+const { generateRid, updateBotPosition } = require("../utils/Utils");
 
 class Move {
   constructor(bot) {
@@ -38,6 +38,14 @@ class Move {
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {
             throw new HighriseError("Error sending FloorHitRequest:".red);
+          } else {
+            const bot_position = {
+              x: dest.x,
+              y: dest.y,
+              z: dest.z,
+              facing: dest.facing
+            }
+            updateBotPosition(bot_position);
           }
         });
       }
@@ -68,6 +76,12 @@ class Move {
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {
             throw new HighriseError("Error sending AnchorHitRequest:".red);
+          } else {
+            const bot_position = {
+              entity_id: dest.entity_id,
+              anchor_ix: dest.anchor_ix
+            }
+            updateBotPosition(bot_position);
           }
         });
       }

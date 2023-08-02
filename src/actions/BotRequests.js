@@ -1,6 +1,31 @@
 const { HighriseError } = require("../handlers/error");
 const { GetWalletRequest, SendPayloadAndGetResponse, BuyVoiceTimeRequest, BuyRoomBoostRequest, GetInventoryRequest, BuyItemRequest, SetOutfitRequest } = require("../models/models");
-const { generateRid } = require("../utils/Utils");
+const { generateRid, getBotInfo } = require("../utils/Utils");
+
+class Client {
+  constructor(bot) {
+    this.bot = bot;
+    this.rid = generateRid();
+  }
+
+  fetch() {
+    return getBotInfo();
+  }
+
+  id = {
+    get: () => {
+      const info = getBotInfo();
+      return info.id;
+    }
+  }
+
+  position = {
+    get: () => {
+      const info = getBotInfo();
+      return info.position;
+    }
+  }
+}
 
 class Outfit {
   constructor(bot) {
@@ -312,4 +337,4 @@ class Wallet {
 
 }
 
-module.exports = { Wallet, Inventory, Item, Outfit };
+module.exports = { Wallet, Inventory, Item, Outfit, Client };

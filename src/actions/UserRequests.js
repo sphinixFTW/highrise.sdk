@@ -1,6 +1,6 @@
 const { HighriseError } = require("../handlers/error");
 const { InviteSpeakerRequest, RemoveSpeakerRequest, ModerateRoomRequest, EmoteRequest, MoveUserToRoomRequest, TeleportRequest, Position, SendPayloadAndGetResponse, GetUserOutfitRequest, GetRoomPrivilegeRequest, GetBackpackRequest, ReactionRequest, TipUserRequest } = require("../models/models");
-const { generateRid, CachedRoomUsers } = require("../utils/Utils");
+const { generateRid, CachedRoomUsers, getBotInfo, updateBotPosition } = require("../utils/Utils");
 
 class Users {
   constructor(bot) {
@@ -349,6 +349,16 @@ class Users {
           const userData = CachedRoomUsers.get(request.user_id);
           if (userData) {
             userData.position = request.destination;
+          }
+          const botInfo = getBotInfo();
+          if (botInfo.id === user_id) {
+            const bot_position = {
+              x: dest.x,
+              y: dest.y,
+              z: dest.z,
+              facing: dest.facing
+            }
+            updateBotPosition(bot_position);
           }
           if (error) {
             console.error('Error sending teleport request:'.red, error);
