@@ -184,18 +184,16 @@ class AwaitEvents {
     return new Promise((resolve) => {
       let timer;
       let collected = [];
-      let uniqueUsers = new Set();
 
       const listener = (sender, receiver, item) => {
-        if ((!filter || filter(sender, receiver, item)) && !uniqueUsers.has(sender.id)) {
+        if (!filter || filter(sender, receiver, item)) {
           collected.push({ sender, receiver, item });
-          uniqueUsers.add(sender.id);
-        }
 
-        if (max && collected.length >= max) {
-          clearTimeout(timer);
-          this.removeTipsListener(listener);
-          resolve(collected);
+          if (max && collected.length >= max) {
+            clearTimeout(timer);
+            this.removeTipsListener(listener);
+            resolve(collected);
+          }
         }
       };
 
@@ -207,6 +205,7 @@ class AwaitEvents {
       }, idle);
     });
   }
+
 
   addTipsListener(listener) {
     this.tipsListeners.set(listener, true);
