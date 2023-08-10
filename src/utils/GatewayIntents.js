@@ -10,6 +10,7 @@ const GatewayIntentBits = {
   VoiceChat: 1 << 9,
   Movements: 1 << 10,
   Error: 1 << 11,
+  Moderate: 1 << 12
 };
 
 const EventTypeIntents = {
@@ -23,7 +24,8 @@ const EventTypeIntents = {
   TipReactionEvent: [GatewayIntentBits.Tips],
   VoiceEvent: [GatewayIntentBits.VoiceChat],
   UserMovedEvent: [GatewayIntentBits.Movements],
-  Error: [GatewayIntentBits.Error]
+  Error: [GatewayIntentBits.Error],
+  RoomModeratedEvent: [GatewayIntentBits.Moderate]
 };
 
 module.exports = {

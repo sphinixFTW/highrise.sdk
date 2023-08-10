@@ -10,6 +10,7 @@ const handleMovementEvent = require("../models/events/handleMovementEvent");
 const handleVoiceEvent = require("../models/events/handleVoiceEvent");
 const handleDMEvent = require("../models/events/handleDMEvent");
 const handleErrorEvent = require("../models/events/handleErrorEvent");
+const handleRoomModerateEvent = require("../models/events/handleModerationEvents");
 
 // Import other event handlers as needed
 
@@ -24,28 +25,46 @@ function handleEvent(eventType, data) {
   try {
     const emit = this.emit.bind(this);
 
-    if (eventType === 'SessionMetadata') {
-      handleReadyEvent(data, emit);
-    } else if (eventType === 'ChatEvent') {
-      handleChatEvent(data, emit);
-    } else if (eventType === 'MessageEvent') {
-      handleDMEvent(data, emit);
-    } else if (eventType === 'UserJoinedEvent') {
-      handleUserJoinedEvent(data, emit)
-    } else if (eventType === 'UserLeftEvent') {
-      handleUserLeftEvent(data, emit)
-    } else if (eventType === 'EmoteEvent') {
-      handleEmoteEvent(data, emit)
-    } else if (eventType === 'ReactionEvent') {
-      handleReactEvent(data, emit)
-    } else if (eventType === 'TipReactionEvent') {
-      handleTipsEvent(data, emit)
-    } else if (eventType === 'UserMovedEvent') {
-      handleMovementEvent(data, emit)
-    } else if (eventType === 'VoiceEvent') {
-      handleVoiceEvent(data, emit)
-    } else if (eventType === 'Error') {
-      handleErrorEvent(data, emit);
+    switch (eventType) {
+      case 'SessionMetadata':
+        handleReadyEvent(data, emit);
+        break;
+      case 'ChatEvent':
+        handleChatEvent(data, emit);
+        break;
+      case 'MessageEvent':
+        handleDMEvent(data, emit);
+        break;
+      case 'UserJoinedEvent':
+        handleUserJoinedEvent(data, emit);
+        break;
+      case 'UserLeftEvent':
+        handleUserLeftEvent(data, emit);
+        break;
+      case 'EmoteEvent':
+        handleEmoteEvent(data, emit);
+        break;
+      case 'ReactionEvent':
+        handleReactEvent(data, emit);
+        break;
+      case 'TipReactionEvent':
+        handleTipsEvent(data, emit);
+        break;
+      case 'UserMovedEvent':
+        handleMovementEvent(data, emit);
+        break;
+      case 'VoiceEvent':
+        handleVoiceEvent(data, emit);
+        break;
+      case 'Error':
+        handleErrorEvent(data, emit);
+        break;
+      case 'RoomModeratedEvent':
+        handleRoomModerateEvent(data, emit);
+        break;
+      default:
+        // Handle unknown event type
+        console.warn(`Unknown event type: ${eventType}`);
     }
   } catch (error) {
     console.error(`Error occurred while handling the API events:`, error);

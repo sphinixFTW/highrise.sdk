@@ -35,6 +35,7 @@ class Highrise extends HighriseClient {
     this.roomId = null;
     this.keepaliveInterval = null;
     this.messageEventListener = null;
+    this.closeEventListener = null;
   }
 
   /**
@@ -103,11 +104,13 @@ class Highrise extends HighriseClient {
         this.ws.addEventListener('message', this.messageEventListener);
 
         // Event listener for WebSocket close event
-        this.ws.addEventListener('close', (event) => {
+        this.closeEventListener = (event) => {
           this.close(event);
           this.connected = false;
           this.reconnect();
-        });
+        };
+
+        this.ws.addEventListener('close', this.closeEventListener);
 
         // Event listener for WebSocket error event
         this.ws.addEventListener('error', (event) => {
@@ -116,6 +119,16 @@ class Highrise extends HighriseClient {
         });
       }
     }
+  }
+
+  shutdown() {
+    // Remove the close event listener before closing the WebSocket
+    if (this.closeEventListener) {
+      this.ws.removeEventListener('close', this.closeEventListener);
+      this.closeEventListener = null; // Reset the reference
+    }
+
+    this.ws.close();
   }
 
   close(event) {

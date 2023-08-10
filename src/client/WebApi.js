@@ -30,7 +30,7 @@ class WebApi extends EventEmitter {
 
       return profile; // Return the retrieved user profile
     } catch (error) {
-      console.error(`An Error Occurred:`, error);
+      return null;
     }
   }
 
@@ -81,7 +81,7 @@ class WebApi extends EventEmitter {
       return users || null;
     } catch (error) {
       // Handle any errors that occurred during the request
-      console.error('Error retrieving user list:', error);
+      return null;
     }
   }
 
@@ -126,7 +126,7 @@ class WebApi extends EventEmitter {
       return roomList || null
     } catch (error) {
       // Handle any errors that occurred during the request
-      console.error('Error retrieving room list:', error);
+      return null;
     }
   }
 
@@ -175,8 +175,7 @@ class WebApi extends EventEmitter {
 
       return postList
     } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error retrieving newsfeed posts:', error);
+      return null;
     }
   }
 
@@ -215,9 +214,9 @@ class WebApi extends EventEmitter {
         }
       }
 
-      return homeSpawnRoom || null; // Return the home spawn room if found, otherwise return null
+      return homeSpawnRoom
     } catch (error) {
-      console.error(`An Error Occurred:`, error);
+      return null;
     }
   }
 
@@ -239,10 +238,9 @@ class WebApi extends EventEmitter {
       const response = await axios.get(endpoint);
       const post = response.data;
 
-      return post || null;
+      return post
     } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error retrieving post:', error);
+      return null;
     }
   }
 
@@ -264,9 +262,9 @@ class WebApi extends EventEmitter {
       const grab = response.data;
 
       // Return the retrieved grab or null if not found
-      return grab || null;
+      return grab
     } catch (error) {
-      console.error('Error retrieving grab:', error);
+      return null;
     }
   }
 
@@ -291,11 +289,10 @@ class WebApi extends EventEmitter {
       const item = response.data;
 
       // Return the retrieved item or null if not found
-      return item || null;
+      return item
 
     } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error retrieving item:', error);
+      return null;
     }
   }
 
@@ -339,8 +336,7 @@ class WebApi extends EventEmitter {
       // Return the array of item objects
       return items;
     } catch (error) {
-      console.error('Error retrieving items:', error);
-      throw error;
+      return null;
     }
   }
 
@@ -375,8 +371,7 @@ class WebApi extends EventEmitter {
       // Return the array of grabbed objects
       return grabs;
     } catch (error) {
-      console.error('Error retrieving grabs:', error);
-      throw error;
+      return null;
     }
   }
 
@@ -398,11 +393,9 @@ class WebApi extends EventEmitter {
       const response = await axios.get(endpoint);
       const roomData = response.data;
 
-      return roomData || null; // Return the processed room data if needed
+      return roomData
     } catch (error) {
-      // Handle any errors that occurred during the request
-      console.error('Error retrieving room data:', error);
-      throw error;
+      return null;
     }
   }
 
@@ -419,8 +412,7 @@ class WebApi extends EventEmitter {
           const room = await this.getRoomData(room_id);
           return room;
         } catch (error) {
-          console.error(`An Error Occurred:`, error);
-          throw error;
+          return null;
         }
       }
     },
@@ -436,8 +428,7 @@ class WebApi extends EventEmitter {
           const post = await this.getPost(post_id);
           return post
         } catch (error) {
-          console.error(`An Error Occurred:`, error);
-          throw error;
+          return null;
         }
       }
     },
@@ -456,8 +447,7 @@ class WebApi extends EventEmitter {
           const posts = await this.getNewsfeedPosts(author_id, limit, starts_after, sort_order);
           return posts
         } catch (error) {
-          console.error(`An Error Occurred:`, error);
-          throw error;
+          return null;
         }
       }
     },
@@ -472,8 +462,7 @@ class WebApi extends EventEmitter {
           const spawn = await this.getHomeSpawnRoom(owner_id);
           return spawn;
         } catch (error) {
-          console.error(`An Error Occurred:`, error);
-          throw error;
+          return null;
         }
       }
     },
@@ -491,8 +480,7 @@ class WebApi extends EventEmitter {
           const rooms = await this.getRooms(owner_id, limit, starts_after, sort_order);
           return rooms;
         } catch (error) {
-          console.error(`An Error Occurred:`, error);
-          throw error;
+          return null;
         }
       }
     },
@@ -508,8 +496,7 @@ class WebApi extends EventEmitter {
           const profile = await this.getUserProfile(user_id);
           return profile;
         } catch (error) {
-          console.error(`An Error Occurred:`, error);
-          throw error;
+          return null;
         }
       },
     },

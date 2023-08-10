@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.6] - 2023-08-10
+## Added
+- Introducing a new event that emits after performing moderation actions ["kick", "ban", "unban", "mute", "unmute"].
+- Implementation of a new Gateway for the "Moderate" event.
+- Addition of a new method that enables you to gracefully shut down the bot.
+
+## Fixed
+- Addressed issues with WebApi, where it would occasionally return an error when no results were found. It has been enhanced to now return "null" in such cases.
+
 ## [1.1.5] - 2023-08-02
 ## Added
 - A new parameter to the "playerJoin" event that returns the player's position.

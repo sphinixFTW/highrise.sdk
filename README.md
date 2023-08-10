@@ -67,6 +67,7 @@ GatewayIntentBits represents the different intents or event types that your bot 
 - `GatewayIntentBits.VoiceChat`: Represents voice chat events.
 - `GatewayIntentBits.Movements`: Indicates when users move within the room.
 - `GatewayIntentBits.Error`: Represents errors that occur during API operations.
+- `GatewayIntentBits.Moderate`: Indicates when moderators perform moderation actions on players.
 
 You can choose the intents based on the events you want your bot to handle.
 
