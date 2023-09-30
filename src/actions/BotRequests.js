@@ -48,7 +48,7 @@ class Outfit {
         rid: setOutfitRequest.rid
       };
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {
             console.error("Error sending SetOutfitRequest:".red, error);
@@ -75,7 +75,7 @@ class Item {
         throw new HighriseError("Invalid item_id. Please provide a valid item ID".red);
       }
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         // Create a BuyItemRequest object
         const buyItemRequest = new BuyItemRequest(item_id, this.rid);
 
@@ -111,7 +111,7 @@ class Inventory {
   async get() {
     try {
       // Check if the WebSocket connection is open
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         const getInventoryRequest = new GetInventoryRequest(this.rid);
 
         // Prepare the payload for the request
@@ -159,7 +159,7 @@ class Wallet {
         }
 
         // Check if the WebSocket connection is open
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           // Create a BuyVoiceTimeRequest object
           const buyVoiceTimeRequest = new BuyVoiceTimeRequest(payment_method, this.rid);
 
@@ -208,7 +208,7 @@ class Wallet {
         }
 
         // Check if the WebSocket connection is open
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           // Create a BuyRoomBoostRequest object
           const buyRoomBoostRequest = new BuyRoomBoostRequest(payment_method, amount, this.rid);
 
@@ -241,7 +241,7 @@ class Wallet {
   async fetch() {
     try {
       // Check if the WebSocket connection is open
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         // Create a GetWalletRequest object
         const getWalletRequest = new GetWalletRequest(this.rid);
 

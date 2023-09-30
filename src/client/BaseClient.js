@@ -62,7 +62,7 @@ class HighriseClient extends EventEmitter {
         throw new HighriseError(`[WARNING]: You can't send an empty message.`.red);
       }
 
-      if (this.ws.readyState === this.websocket.OPEN) {
+      if (this.ws && this.ws.readyState === this.websocket.OPEN) {
         let payload;
         if (message.whisper) {
           const chatRequest = new ChatRequest(message.message, message.receiver, generateRid());
@@ -98,7 +98,7 @@ class HighriseClient extends EventEmitter {
   */
   sendPrivateInvite(conversation_id, room_id) {
     try {
-      if (this.ws.readyState === this.websocket.OPEN) {
+      if (this.ws && this.ws.readyState === this.websocket.OPEN) {
         const payload = {
           _type: 'SendMessageRequest',
           conversation_id: conversation_id,
@@ -122,7 +122,7 @@ class HighriseClient extends EventEmitter {
   */
   sendPrivateMessage(conversation_id, content) {
     try {
-      if (this.ws.readyState === this.websocket.OPEN) {
+      if (this.ws && this.ws.readyState === this.websocket.OPEN) {
         const payload = {
           _type: 'SendMessageRequest',
           conversation_id: conversation_id,

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.7] - 2023-09-29
+## Fixed
+- Fixed an issue where, upon shutting down the bot, the websocket would sometimes remain open.
+
 ## [1.1.6] - 2023-08-10
 ## Added
 - Introducing a new event that emits after performing moderation actions ["kick", "ban", "unban", "mute", "unmute"].

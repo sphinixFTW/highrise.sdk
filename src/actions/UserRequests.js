@@ -78,7 +78,7 @@ class Users {
       };
 
       return new Promise((resolve, reject) => {
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           this.bot.ws.send(JSON.stringify(payload), error => {
             if (error) {
               console.error("Error sending ModerateRoomRequest:".red, error);
@@ -187,7 +187,7 @@ class Users {
         rid: emoteRequest.rid
       };
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {
             console.error("Error sending EmoteRequest:".red, error);
@@ -260,7 +260,7 @@ class Users {
         throw new HighriseError(`Invalid amount. Please provide a valid amount from the available gold bars: ${availableAmounts}`.red);
       }
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         const tipUserRequest = new TipUserRequest(user_id, BARS[amount], this.rid);
         const payload = {
           _type: 'TipUserRequest',
@@ -301,7 +301,7 @@ class Users {
         rid: transportRequest.rid
       };
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         this.bot.ws.send(JSON.stringify(request), (error) => {
           if (error) {
             console.error('Error sending transport request:'.red, error);
@@ -344,7 +344,7 @@ class Users {
         rid: teleportRequest.rid
       };
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         this.bot.ws.send(JSON.stringify(request), (error) => {
           const userData = CachedRoomUsers.get(request.user_id);
           if (userData) {
@@ -378,7 +378,7 @@ class Users {
         if (!user_id || typeof user_id !== 'string') {
           throw new HighriseError('Invalid user_id. Please provide a valid user_id'.red);
         }
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           const getRoomPrivilegeRequest = new GetRoomPrivilegeRequest(user_id, this.rid);
           const payload = {
             _type: "GetRoomPrivilegeRequest",
@@ -463,7 +463,7 @@ class Users {
           throw new HighriseError('Invalid user_id. Please provide a valid user_id'.red);
         }
 
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           const getBackpackRequest = new GetBackpackRequest(user_id, this.rid);
           const payload = {
             _type: "GetBackpackRequest",
@@ -493,7 +493,7 @@ class Users {
           throw new HighriseError('Invalid user_id. Please provide a valid user_id'.red);
         }
 
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           const getUserOutfitRequest = new GetUserOutfitRequest(user_id, this.rid);
           const payload = {
             _type: "GetUserOutfitRequest",

@@ -10,7 +10,7 @@ class VoiceChat {
 
   async fetch() {
     try {
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         const checkVoiceChatRequest = new CheckVoiceChatRequest(this.rid);
         const payload = {
           _type: 'CheckVoiceChatRequest',

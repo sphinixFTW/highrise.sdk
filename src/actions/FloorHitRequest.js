@@ -34,7 +34,7 @@ class Move {
         rid: floorHitRequest.rid
       };
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {
             throw new HighriseError("Error sending FloorHitRequest:".red);
@@ -72,7 +72,7 @@ class Move {
         rid: anchorHitRequest.rid
       };
 
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {
             throw new HighriseError("Error sending AnchorHitRequest:".red);

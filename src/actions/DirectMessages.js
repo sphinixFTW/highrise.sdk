@@ -17,7 +17,7 @@ class DirectMessages {
      */
     get: async (not_joined = false, last_id = null) => {
       try {
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           const getDmRequest = new GetConversationsRequest(not_joined, last_id, this.rid);
           const payload = {
             _type: "GetConversationsRequest",
@@ -53,7 +53,7 @@ class DirectMessages {
     */
     get: async (conversation_id, last_message_id = null) => {
       try {
-        if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+        if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
           const getMessagesRequest = new GetMessagesRequest(conversation_id, last_message_id, this.rid);
           const payload = {
             _type: "GetMessagesRequest",
@@ -101,7 +101,7 @@ class DirectMessages {
       };
 
       // Check if the WebSocket connection is open
-      if (this.bot.ws.readyState === this.bot.websocket.OPEN) {
+      if (this.bot.ws && this.bot.ws.readyState === this.bot.websocket.OPEN) {
         // Send the leaveConversationRequest payload
         this.bot.ws.send(JSON.stringify(payload), (error) => {
           if (error) {

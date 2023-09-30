@@ -128,7 +128,10 @@ class Highrise extends HighriseClient {
       this.closeEventListener = null; // Reset the reference
     }
 
-    this.ws.close();
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null; // Reset the WebSocket reference for this instance
+    }
   }
 
   close(event) {
@@ -182,7 +185,7 @@ class Highrise extends HighriseClient {
   * @returns {void}
   */
   sendKeepalive() {
-    if (this.connected && this.ws.readyState === WebSocket.OPEN) {
+    if (this.ws && this.connected && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({ _type: 'KeepaliveRequest', rid: generateRid() }));
     }
 
@@ -206,7 +209,7 @@ class Highrise extends HighriseClient {
       clearTimeout(this.reconnectTimeout); // Clear the previous timeout, if any
 
       this.reconnectTimeout = setTimeout(() => {
-        if (this.ws.readyState === WebSocket.CLOSED) {
+        if (this.ws && this.ws.readyState === WebSocket.CLOSED) {
           // Clean up the existing WebSocket before reconnecting
           this.ws.removeEventListener('message', this.messageEventListener);
           this.ws.close();
